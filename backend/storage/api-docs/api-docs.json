@@ -1,0 +1,488 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API Documentation (Product service)",
+        "description": "This is the way.",
+        "contact": {
+            "name": "Stanislav Boyko",
+            "email": "mzcoding@gmail.com"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8000/",
+            "description": "Dev server"
+        },
+        {
+            "url": " http://localhost:8000/",
+            "description": "Stage server"
+        },
+        {
+            "url": "",
+            "description": "Production server"
+        }
+    ],
+    "paths": {
+        "/api/v1/orders": {
+            "get": {
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "List all orders ",
+                "description": "Get all orders",
+                "operationId": "2fd056a400bd274a5b2278e92a8ed010",
+                "responses": {
+                    "200": {
+                        "description": "Success result",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/Body200"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "Create new order ",
+                "description": "Create new order",
+                "operationId": "f92c2f898a00f407e1efa0fd23c93b24",
+                "requestBody": {
+                    "request": "OrderRequest",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "productId",
+                                    "term_rent"
+                                ],
+                                "properties": {
+                                    "product_id": {
+                                        "description": "product id ",
+                                        "type": "integer",
+                                        "example": "5"
+                                    },
+                                    "type": {
+                                        "description": "product id ",
+                                        "type": "string",
+                                        "example": "8"
+                                    },
+                                    "term_rent": {
+                                        "description": "rental period",
+                                        "type": "integer",
+                                        "example": "8"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success result",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/OrderResource"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "Delete order ",
+                "description": "Delete order",
+                "operationId": "1780c64c3152948f46fe2bcca7254d88",
+                "responses": {
+                    "200": {
+                        "description": "Success result",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/Body200"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            }
+        },
+        "/api/v1/status/check/{hashCode}": {
+            "get": {
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "Check status order by code",
+                "description": "Check status order by code",
+                "operationId": "abd3fc12c7e2760887ab6549d5e2399c",
+                "responses": {
+                    "200": {
+                        "description": "Success result",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/Body200"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    }
+                }
+            }
+        },
+        "/status/rent/{order}/update": {
+            "put": {
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "Update rent",
+                "description": "Update rent",
+                "operationId": "ad03e76585b68c5b59cf980bf7fb0672",
+                "responses": {
+                    "200": {
+                        "description": "Success result",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/Body200"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Resource not found"
+                    }
+                }
+            }
+        },
+        "/api/v1/users": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Get a list of users ",
+                "description": "Get all users",
+                "operationId": "03af15b1572ae01432667030b501e0af",
+                "responses": {
+                    "200": {
+                        "description": "Success result",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/Body200"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Body200": {
+                "properties": {
+                    "success": {
+                        "description": "Successful request",
+                        "type": "boolean",
+                        "example": "true"
+                    },
+                    "message": {
+                        "description": "Status Description",
+                        "type": "string",
+                        "example": "Request completed successfully"
+                    }
+                },
+                "type": "object"
+            },
+            "Pagination": {
+                "properties": {
+                    "links": {
+                        "description": "Pagination links",
+                        "properties": {
+                            "first": {
+                                "example": "https://current.resource?page=1"
+                            },
+                            "last": {
+                                "example": "https://current.resource?page=8"
+                            },
+                            "prev": {
+                                "example": "null"
+                            },
+                            "next": {
+                                "example": "https://current.resource?page=2"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "meta": {
+                        "description": "Pagination meta data",
+                        "properties": {
+                            "currentPage": {
+                                "example": "1"
+                            },
+                            "from": {
+                                "example": "1"
+                            },
+                            "lastPage": {
+                                "example": "8"
+                            },
+                            "next": {
+                                "example": "Ingo"
+                            },
+                            "links": {
+                                "description": "Pagination links",
+                                "properties": {
+                                    "": {
+                                        "description": "Pagination links",
+                                        "type": "array",
+                                        "items": {}
+                                    }
+                                },
+                                "type": "object"
+                            },
+                            "path": {
+                                "example": "https://current.resource"
+                            },
+                            "perPage": {
+                                "example": "10"
+                            },
+                            "to": {
+                                "example": "10"
+                            },
+                            "total": {
+                                "example": "77"
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "type": "object"
+            },
+            "OrderResource": {
+                "properties": {
+                    "id": {
+                        "title": "Order id",
+                        "description": "Order id",
+                        "type": "integer"
+                    },
+                    "status": {
+                        "title": "Order status",
+                        "description": "Order status",
+                        "type": "string"
+                    },
+                    "code": {
+                        "title": "Hash code",
+                        "description": "Hash code",
+                        "type": "string",
+                        "example": "f7cc10d4a09f988835b94825049ca5aa"
+                    },
+                    "is_rent": {
+                        "title": "Rent or not",
+                        "description": "Rent or not",
+                        "type": "boolean",
+                        "example": "true"
+                    },
+                    "term_rent": {
+                        "title": "Term rent in hours",
+                        "description": "Term rent in hours",
+                        "type": "integer",
+                        "example": "8"
+                    },
+                    "term_rent_at": {
+                        "title": "Rent date",
+                        "description": "Rent date",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-01-31 20:09:24"
+                    },
+                    "created_at": {
+                        "title": "Created date",
+                        "description": "Created date",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-01-31 20:09:24"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "responses": {
+            "200": {
+                "description": "Request completed successfully",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/Body200"
+                        }
+                    }
+                }
+            },
+            "400": {
+                "description": "Input data error",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "required": [
+                                "success",
+                                "message"
+                            ],
+                            "properties": {
+                                "success": {
+                                    "description": "Successful request",
+                                    "type": "boolean",
+                                    "example": "false"
+                                },
+                                "message": {
+                                    "description": "Status Description",
+                                    "type": "string",
+                                    "example": "Input parameters are not as expected"
+                                },
+                                "errors": {
+                                    "description": "List errors",
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "key": {
+                                                "description": "Key",
+                                                "type": "string",
+                                                "example": "field"
+                                            }
+                                        },
+                                        "type": "object"
+                                    },
+                                    "example": {
+                                        "field": "Field field must be a number"
+                                    }
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            },
+            "403": {
+                "description": "Access error",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "required": [
+                                "success",
+                                "message"
+                            ],
+                            "properties": {
+                                "success": {
+                                    "description": "Successful request",
+                                    "type": "boolean",
+                                    "example": "false"
+                                },
+                                "message": {
+                                    "description": "Status Description",
+                                    "type": "string",
+                                    "example": "Access error!"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            },
+            "404": {
+                "description": "Method not found",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "required": [
+                                "success",
+                                "message"
+                            ],
+                            "properties": {
+                                "success": {
+                                    "description": "Successful request",
+                                    "type": "boolean",
+                                    "example": "false"
+                                },
+                                "message": {
+                                    "description": "Status Description",
+                                    "type": "string",
+                                    "example": "The called method was not found"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            },
+            "500": {
+                "description": "Server error",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "required": [
+                                "success",
+                                "message"
+                            ],
+                            "properties": {
+                                "success": {
+                                    "description": "Successful request",
+                                    "type": "boolean",
+                                    "example": "false"
+                                },
+                                "message": {
+                                    "description": "Status Description",
+                                    "type": "string",
+                                    "example": "An internal error has occurred! Please contact your administrator."
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

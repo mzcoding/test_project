@@ -1,0 +1,99 @@
+version: '3'
+
+networks:
+    keepcode:
+
+services:
+    keepcode-nginx:
+        platform: linux/amd64 #arm processors, you should delete on this line if you don't use arm architecture
+        build:
+            context: ./docker
+            dockerfile: nginx/Dockerfile
+            args:
+                - USER_ID=${USER_ID:-1000}
+                - GROUP_ID=${GROUP_ID:-1000}
+                - USER=${USER:-admin} #id -un
+        restart: unless-stopped
+        container_name: keepcode-nginx
+        ports:
+            - 8000:8000
+        volumes:
+            - ./backend:/var/www/html
+            - .env:/var/www/html/.env
+        depends_on:
+            - keepcode-php
+            - keepcode-redis
+            - keepcode-mysql
+            - keepcode-mailhog
+        networks:
+            - keepcode
+    keepcode-php:
+        platform: linux/amd64 #arm processors
+        build:
+            context: ./docker
+            dockerfile: php/Dockerfile
+            args:
+                - USER_ID=${USER_ID:-1000}
+                - GROUP_ID=${GROUP_ID:-1000}
+                - USER=${USER:-admin} #id -un
+        container_name: keepcode-php
+        ports:
+            - ":9000"
+        volumes:
+            - ./backend:/var/www/html
+            - .env:/var/www/html/.env
+        networks:
+            - keepcode
+    keepcode-mysql:
+        platform: linux/amd64 #arm processors
+        image: mariadb:11.0
+        container_name: keepcode-mysql
+        restart: unless-stopped
+        tty: true
+        ports:
+            - 3307:3306
+        environment:
+            MYSQL_DATABASE: ${DB_DATABASE}
+            MYSQL_USER: ${DB_USERNAME}
+            MYSQL_PASSWORD: ${DB_PASSWORD}
+            MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+            SERVICE_TAGS: dev
+            SERVICE_NAME: mysql
+        volumes:
+            - ./docker/mysql:/var/lib/mysql
+        networks:
+            - keepcode
+    keepcode-redis:
+        platform: linux/amd64 #arm processors
+        image: redis:alpine
+        container_name: keepcode-redis
+        restart: unless-stopped
+        ports:
+            - 6380:6379
+        networks:
+            - keepcode
+    keepcode-mailhog:
+        platform: linux/amd64 #arm processors
+        image: mailhog/mailhog:latest
+        container_name: keepcode-mailhog
+        logging:
+            driver: 'none'
+        ports:
+            - 8025:8025
+        networks:
+            - keepcode
+    keepcode-npm:
+        platform: linux/amd64 #arm processors
+        image: node:alpine
+        container_name: keepcode-npm
+        volumes:
+            - ./frontend:/var/www/html/frontend
+            - .env:/var/www/html/frontend/.env
+        ports:
+            - 3000:3000
+            - 3001:3001
+        working_dir: /var/www/html/frontend
+        profiles: ["npm"]
+        entrypoint: ['npm']
+        networks:
+            - keepcode
