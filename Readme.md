@@ -6,7 +6,7 @@
 4. Наконец скопируем файл конфигурации: `make compose-env`, а так-же необходимо сгенерировать ключ приложения: `make compose-key-generate`
 5. В итоге мы можем открыть наш сайт по адресу: http://localhost:8000
 6. Далее запустите миграции `make compose-migrate` и сиды `make compose-seed`
-7. Используем запросы из [коллекции Postman](https://github.com) при необходимости, заменить Bearer token на ваш в авторизованных эндпоинтах
+7. Используем запросы из [коллекции Postman](https://github.com/mzcoding/test_project/blob/main/Product%20service%20API.postman_collection.json) при необходимости, заменить Bearer token на ваш в авторизованных эндпоинтах
 
 **Опционально:**
  - Swagger: http://localhost:8000/api/documentation#/  (Генерация через команду `make compose-swagger`)
